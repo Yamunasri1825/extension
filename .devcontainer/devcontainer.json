@@ -1,0 +1,26 @@
+{
+    "name": "Multi-Language Debug",
+    "image": "mcr.microsoft.com/devcontainers/universal:latest",
+    "features": {
+        "ghcr.io/devcontainers/features/node:1": {},
+        "ghcr.io/devcontainers/features/python:1": {},
+        "ghcr.io/devcontainers/features/java:1": {},
+        "ghcr.io/devcontainers/features/go:1": {},
+        "ghcr.io/devcontainers/features/php:1": {},
+        "ghcr.io/devcontainers/features/rust:1": {}
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-python.python",
+                "ms-vscode.cpptools",
+                "ms-vscode.js-debug",
+                "redhat.java",
+                "golang.go",
+                "xdebug.php-debug",
+                "vadimcn.vscode-lldb"
+            ]
+        }
+    },
+    "postCreateCommand": "npm install"
+} 
