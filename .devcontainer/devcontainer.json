@@ -7,7 +7,8 @@
         "ghcr.io/devcontainers/features/java:1": {},
         "ghcr.io/devcontainers/features/go:1": {},
         "ghcr.io/devcontainers/features/php:1": {},
-        "ghcr.io/devcontainers/features/rust:1": {}
+        "ghcr.io/devcontainers/features/rust:1": {},
+        "ghcr.io/devcontainers/features/cpp:1": {}
     },
     "customizations": {
         "vscode": {
@@ -22,5 +23,5 @@
             ]
         }
     },
-    "postCreateCommand": "npm install"
+    "postCreateCommand": "npm install && sudo apt-get update && sudo apt-get install -y build-essential gdb"
 } 
