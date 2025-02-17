@@ -21,7 +21,20 @@
                 "golang.go",
                 "xdebug.php-debug",
                 "vadimcn.vscode-lldb"
-            ]
+            ],
+            "settings": {
+                "go.toolsManagement.autoUpdate": true,
+                "go.useLanguageServer": true,
+                "go.gopath": "/go",
+                "go.goroot": "/usr/local/go",
+                "go.toolsEnvVars": {
+                    "GO111MODULE": "on"
+                },
+                "go.delveConfig": {
+                    "debugAdapter": "dlv-dap",
+                    "showGlobalVariables": true
+                }
+            }
         }
     },
     "postCreateCommand": "bash .devcontainer/setup.sh",
@@ -31,6 +44,6 @@
     "workspaceFolder": "/workspace",
     "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
     "initializeCommand": {
-        "Setup Script": "mkdir -p .devcontainer && cat > .devcontainer/setup.sh << 'EOL'\n#!/bin/bash\n\n# Update and install dependencies\nsudo apt-get update\nsudo apt-get install -y build-essential gcc gdb cmake\n\n# Install npm packages\nnpm install\n\n# Create project structure\nmkdir -p src/{python,java/src/main/java,c,go}\nmkdir -p build bin\n\n# Set up Java project\ncat > pom.xml << 'XML'\n<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project xmlns=\"http://maven.apache.org/POM/4.0.0\"\n         xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n         xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd\">\n    <modelVersion>4.0.0</modelVersion>\n    <groupId>com.example</groupId>\n    <artifactId>allfiles</artifactId>\n    <version>1.0-SNAPSHOT</version>\n    <properties>\n        <maven.compiler.source>23</maven.compiler.source>\n        <maven.compiler.target>23</maven.compiler.target>\n    </properties>\n</project>\nXML\n\n# Make setup script executable\nchmod +x .devcontainer/setup.sh\nEOL"
+        "Setup Script": "mkdir -p .devcontainer && cat > .devcontainer/setup.sh << 'EOL'\n#!/bin/bash\n\n# Update and install dependencies\nsudo apt-get update\nsudo apt-get install -y build-essential gcc gdb cmake\n\n# Install npm packages\nnpm install\n\n# Set up Go environment\ngo install github.com/go-delve/delve/cmd/dlv@latest\n\n# Create project structure\nmkdir -p src/{python,java/src/main/java,c,go}\nmkdir -p build bin\n\n# Set up Java project\ncat > pom.xml << 'XML'\n<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project xmlns=\"http://maven.apache.org/POM/4.0.0\"\n         xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n         xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd\">\n    <modelVersion>4.0.0</modelVersion>\n    <groupId>com.example</groupId>\n    <artifactId>allfiles</artifactId>\n    <version>1.0-SNAPSHOT</version>\n    <properties>\n        <maven.compiler.source>23</maven.compiler.source>\n        <maven.compiler.target>23</maven.compiler.target>\n    </properties>\n</project>\nXML\n\n# Initialize Go module\ncd src/go\ngo mod init example.com/hello\ncd ../..\n\n# Make setup script executable\nchmod +x .devcontainer/setup.sh\nEOL"
     }
 } 
