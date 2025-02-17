@@ -1,0 +1,36 @@
+{
+    "name": "Multi-Language Debug",
+    "image": "mcr.microsoft.com/devcontainers/universal:latest",
+    "features": {
+        "ghcr.io/devcontainers/features/node:1": {},
+        "ghcr.io/devcontainers/features/python:1": {},
+        "ghcr.io/devcontainers/features/java:1": {},
+        "ghcr.io/devcontainers/features/go:1": {
+            "version": "latest"
+        },
+        "ghcr.io/devcontainers/features/php:1": {},
+        "ghcr.io/devcontainers/features/rust:1": {}
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-python.python",
+                "ms-vscode.cpptools",
+                "ms-vscode.js-debug",
+                "redhat.java",
+                "golang.go",
+                "xdebug.php-debug",
+                "vadimcn.vscode-lldb"
+            ]
+        }
+    },
+    "postCreateCommand": "bash .devcontainer/setup.sh",
+    "mounts": [
+        "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
+    ],
+    "workspaceFolder": "/workspace",
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+    "initializeCommand": {
+        "Setup Script": "mkdir -p .devcontainer && cat > .devcontainer/setup.sh << 'EOL'\n#!/bin/bash\n\n# Update and install dependencies\nsudo apt-get update\nsudo apt-get install -y build-essential gcc gdb cmake\n\n# Install npm packages\nnpm install\n\n# Create project structure\nmkdir -p src/{python,java/src/main/java,c,go}\nmkdir -p build bin\n\n# Set up Java project\ncat > pom.xml << 'XML'\n<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project xmlns=\"http://maven.apache.org/POM/4.0.0\"\n         xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n         xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd\">\n    <modelVersion>4.0.0</modelVersion>\n    <groupId>com.example</groupId>\n    <artifactId>allfiles</artifactId>\n    <version>1.0-SNAPSHOT</version>\n    <properties>\n        <maven.compiler.source>23</maven.compiler.source>\n        <maven.compiler.target>23</maven.compiler.target>\n    </properties>\n</project>\nXML\n\n# Make setup script executable\nchmod +x .devcontainer/setup.sh\nEOL"
+    }
+} 
